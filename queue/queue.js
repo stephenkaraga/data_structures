@@ -6,6 +6,7 @@ var Queue = function() {
 
 Queue.prototype.enqueue = function(value) {
   this.storage[this.size] = value;
+  this.size += 1;
 }
 Queue.prototype.dequeue = function() {
   if(this.size - this.front) {
