@@ -1,42 +1,59 @@
-function LinkedList(){
-	this.head = null;
-}
+var LinkedList = function() {
+  this.head = null;
+  this.tail = null;
+};
 
-LinkedList.prototype.add = function(value){
-	var node = {
-		value: value,
-		next: null
-	}
-	var current;
+var NodeConstructor = function(value) {
+  this.value = value;
+  this.next = null;
+};
 
-	if(this.head === null) {
-		this.head = node;
-	} else {
-		current = this.head;
-		while(current.next) {
-			current = current.next;
-		}
-		current.next = node;
-	}
-	return node;
-}
+LinkedList.prototype.unshift = function(value) {
+  var node = new NodeConstructor(value);
+  if (this.head) {
+    node.next = this.head;
+    this.head = node;
+  } else {
+    this.head = node;
+    this.tail = node;
+  }
+};
 
-LinkedList.prototype.remove = function(node){
-	var current, value = node.value;
+LinkedList.prototype.shift = function() {
+  var temp = this.head;
+  this.head = this.head.next;
+  return temp;
+};
 
-	if(this.head !== null){
-		if(this.head === node){
-			this.head = this.head.next;
-			node.next = value;
-			return value;	
-		}
-		current = this.head;
-		while(current.next){
-			if(current.next === node){
-				current.next = node.next;
-				return value;
-			}
-			current = current.next;
-		}
-	}
-}
+LinkedList.prototype.push = function(value) {
+  var node = new NodeConstructor(value);
+  if (this.tail) {
+    this.tail.next = node;
+    this.tail = node;
+  } else {
+    this.head = node;
+    this.tail = node;
+  }
+};
+
+LinkedList.prototype.pop = function(node, temp) {
+  node = node || this.head;
+  temp = this.tail;
+  if (node.next === this.tail) {
+    this.tail = node;
+    this.tail.next = null;
+  } else if (node.next) {
+    return this.pop(node.next);
+  }
+  return temp;
+};
+
+LinkedList.prototype.contains = function(value, node) {
+  node = node || this.head;
+  if (node.value === value) {
+    return true;
+  } else if (node.next) {
+    return this.contains(value, node.next);
+  }
+  return false;
+};
